@@ -1,17 +1,13 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { AlertModule } from 'ngx-bootstrap/alert';
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 // import classes which are required for reactive forms
 import {FormBuilder,Validators} from '@angular/forms'
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,ButtonsModule,AlertModule,BsDropdownModule,ReactiveFormsModule],
+  imports: [CommonModule, RouterOutlet,ReactiveFormsModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   providers : [FormBuilder,Validators]
@@ -21,38 +17,20 @@ export class AppComponent
 {
 // Inject FormBuilder service
 constructor(public fbobj : FormBuilder)
+{}
+contactForm = this.fbobj.group({
+  fname : new FormControl('',[Validators.required]),
+  lname : new FormControl('',[Validators.required]),
+  email : new FormControl('',[Validators.required]),
+  phone : new FormControl('',[Validators.required,Validators.minLength(10)]),
+  address : new FormControl('',[Validators.required]),
+  city : new FormControl('',[Validators.required]),
+  state : new FormControl('',[Validators.required]),
+  zipcode : new FormControl('',[Validators.required,Validators.minLength(5)]),
+  comments : new FormControl('',[Validators.required,Validators.minLength(30)])
+});
+onSubmit() 
 {
-}
-
-MarvellousForm = this.fbobj.group(
-  {
-    // Add Multiple validations
-    username :['', [Validators.required, Validators.minLength(5)] ],
-    passowrd : ['',Validators.required],
-    ConfirmPass : [''],
-    MarvellousClass : this.fbobj.group(
-      {
-        batch :['Python'],
-        fees : ['5000'] 
-      }
-    )
-  }
-);
-
-// Method to set FormControl fields through program
-SetData()
-{
-  this.MarvellousForm.setValue(
-    {
-      username : 'Piyush',
-      passowrd : 'abcd',
-      ConfirmPass :  'abcd',
-      MarvellousClass : 
-      {
-        batch : 'Python',
-        fees : '5000'
-      }
-    }
-  )
+  console.log('Form submitted!', this.contactForm.value);
 }
 }
